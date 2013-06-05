@@ -69,6 +69,8 @@ public:
 
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
 
+    static const std::string DEFAULT_MEDIA_TYPE;
+
 private:
     typedef Poco::FastMutex::ScopedLock ScopedLock;
 

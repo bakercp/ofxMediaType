@@ -26,14 +26,18 @@
 #include "MediaTypeMap.h"
 #include "ApacheMimeTypes.h"
 
+
 namespace ofx {
 namespace Media {
 
 
+const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
+
+
 //------------------------------------------------------------------------------
-MediaTypeMap::MediaTypeMap()
-: _defaultMediaType(Poco::Net::MediaType("application/octet-stream"))
-, _map(defaultMediaTypeMap)
+MediaTypeMap::MediaTypeMap() :
+    _defaultMediaType(DEFAULT_MEDIA_TYPE),
+    _map(defaultMediaTypeMap)
 {
 }
 

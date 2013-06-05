@@ -36,8 +36,13 @@ namespace Media {
 
 class BaseMediaTypeProvider {
 public:
-    BaseMediaTypeProvider() { }
-    virtual ~BaseMediaTypeProvider() { }
+    BaseMediaTypeProvider()
+    {
+    }
+
+    virtual ~BaseMediaTypeProvider()
+    {
+    }
 
     virtual Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file) const = 0;
     virtual Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix) const = 0;
