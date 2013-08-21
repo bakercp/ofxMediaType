@@ -41,7 +41,8 @@ namespace ofx {
 namespace Media {
 
 
-class MediaTypeMap : public BaseMediaTypeProvider  {
+class MediaTypeMap: public BaseMediaTypeProvider
+{
 public:
     typedef std::map<std::string,Poco::Net::MediaType> FileSuffixToMediaTypeMap;
     typedef FileSuffixToMediaTypeMap::const_iterator ConstIterator;
@@ -49,9 +50,9 @@ public:
     MediaTypeMap();
     virtual ~MediaTypeMap();
 
-    Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file)      const;
+    Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file) const;
     Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix) const;
-    Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path)      const;
+    Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const;
 
     void add(const std::string& suffix, const Poco::Net::MediaType& mediaType);
 
@@ -59,7 +60,7 @@ public:
     void load(std::istream& inputStream);
 
     void clear();
-    size_t size() const;
+    std::size_t size() const;
     ConstIterator begin() const;
     ConstIterator end() const;
     ConstIterator find(const std::string& suffix) const;
@@ -81,4 +82,4 @@ private:
 };
 
 
-} }
+} } // namespace ofx::Media

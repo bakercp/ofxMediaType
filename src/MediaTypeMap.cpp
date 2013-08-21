@@ -35,7 +35,7 @@ const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
 
 
 //------------------------------------------------------------------------------
-MediaTypeMap::MediaTypeMap() :
+MediaTypeMap::MediaTypeMap():
     _defaultMediaType(DEFAULT_MEDIA_TYPE),
     _map(defaultMediaTypeMap)
 {
@@ -101,7 +101,7 @@ void MediaTypeMap::clear()
 }
 
 //------------------------------------------------------------------------------
-size_t MediaTypeMap::size() const
+std::size_t MediaTypeMap::size() const
 {
     ScopedLock lock(mutex);
     return _map.size();
@@ -173,4 +173,4 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
 }
 
 
-} }
+} } // namespace ofx::Media
