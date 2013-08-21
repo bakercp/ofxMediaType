@@ -35,6 +35,7 @@
 namespace ofx {
 namespace Media {
 
+
 static std::string apacheMimeTypes = "" \
 "# http://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=markup\n" \
 "#\n" \
@@ -1095,7 +1096,7 @@ static std::string apacheMimeTypes = "" \
 "# application/x-font-sunos-news\n" \
 "application/x-font-ttf				ttf ttc\n" \
 "application/x-font-type1			pfa pfb pfm afm\n" \
-"application/x-font-woff				woff\n" \
+"application/font-woff				woff\n" \
 "# application/x-font-vfont\n" \
 "application/x-freearc				arc\n" \
 "application/x-futuresplash			spl\n" \
