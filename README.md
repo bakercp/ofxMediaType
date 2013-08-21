@@ -1,5 +1,5 @@
-ofxMediaTypes
-=============
+ofxMediaType
+============
 
 This is an addon that makes it easy to discover MIME types.  The basic implementation (contained in this addon) uses the Apache Mime Types definitions found here:
 
