@@ -49,7 +49,20 @@ MediaTypeMap::~MediaTypeMap()
 //------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForFile(const Poco::File& file) const
 {
+    try {
+        if(file.isDirectory())
+        {
+            Poco::Path path(file.path());
+            path = path.makeDirectory();
+            return getMediaTypeForPath(path);
+        }
+    }
+    catch(Poco::IOException e)
+    {
+    }
+
     return getMediaTypeForPath(Poco::Path(file.path()));
+
 }
 
 //------------------------------------------------------------------------------
@@ -58,9 +71,12 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForSuffix(const std::string& suff
     ScopedLock lock(mutex);
     ConstIterator iter = _map.find(suffix);
 
-    if(iter != _map.end()) {
+    if(iter != _map.end())
+    {
         return (*iter).second;
-    } else {
+    }
+    else
+    {
         return _defaultMediaType;
     }
 }
@@ -68,7 +84,21 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForSuffix(const std::string& suff
 //------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) const
 {
-    return getMediaTypeForSuffix(path.getExtension());
+    if(path.isDirectory())
+    {
+        return Poco::Net::MediaType("inode/directory");
+    }
+    else
+    {
+        return getMediaTypeForSuffix(path.getExtension());
+    }
+}
+
+//------------------------------------------------------------------------------
+std::string MediaTypeMap::getMediaDescription(const Poco::File& file,
+                                              bool bExamineCompressed) const
+{
+    return getMediaTypeForFile(file).toString();
 }
 
 //------------------------------------------------------------------------------
@@ -149,7 +179,8 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
 
     std::string line;
 
-    while(std::getline(inputStream,line)) {
+    while(std::getline(inputStream,line))
+    {
 
         if(line.empty() || line[0] == '#') continue;
 
@@ -158,11 +189,13 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
 
         Poco::StringTokenizer tokens(line,"\t",tokenizerFlags);
 
-        if(tokens.count() == 2) {
+        if(tokens.count() == 2)
+        {
             std::string mediaType = tokens[0];
             Poco::StringTokenizer suffixTokens(tokens[1]," ",tokenizerFlags);
             Poco::StringTokenizer::Iterator iter = suffixTokens.begin();
-            while(iter != suffixTokens.end()) {
+            while(iter != suffixTokens.end())
+            {
                 newMap.insert(std::make_pair(*iter, Poco::Net::MediaType(mediaType)));
                 ++iter;
             }

@@ -53,6 +53,12 @@ Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path)
 }
 
 //------------------------------------------------------------------------------
+std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed)
+{
+    return _mediaTypeProviderPtr->getMediaDescription(file, bExamineCompressed);
+}
+
+//------------------------------------------------------------------------------
 BaseMediaTypeProvider::Ptr getMediaTypeProvider()
 {
 	return _mediaTypeProviderPtr;

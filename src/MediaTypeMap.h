@@ -53,6 +53,7 @@ public:
     Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file) const;
     Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix) const;
     Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const;
+    std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed) const;
 
     void add(const std::string& suffix, const Poco::Net::MediaType& mediaType);
 
