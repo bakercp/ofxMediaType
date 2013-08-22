@@ -29,7 +29,7 @@
 #include "ofMain.h"
 #include "Poco/File.h"
 #include "Poco/Net/MediaType.h"
-#include "MediaTypeMap.h"
+#include "MediaTypeUtils.h"
 
 
 class ofApp: public ofBaseApp
@@ -40,11 +40,9 @@ public:
 
     void dragEvent(ofDragInfo dragInfo);
 
-    ofx::Media::MediaTypeMap mediaMap;
-
     std::string instructions;
 
     Poco::File file;
-    string mediaType;
+    std::string mediaType;
     
 };

@@ -29,18 +29,18 @@
 //------------------------------------------------------------------------------
 void ofApp::setup()
 {
-
-    instructions = "Drag file onto window for more info.";
+    instructions = "Drag file onto the window for more info.";
     mediaType = "";
 
-    // simulate a drag for platforms that don't support drag events
+    // simulate a drag event for platforms that don't yet support drag events
     ofDragInfo simulatedDrag;
     simulatedDrag.files.push_back(ofToDataPath("automat.ttf"));
     ofNotifyDragEvent(simulatedDrag);
 }
 
 //------------------------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw()
+{
     ofBackground(0);
 
     // draw instructions and info
@@ -50,12 +50,11 @@ void ofApp::draw(){
 }
 
 //------------------------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo) {
-
+void ofApp::dragEvent(ofDragInfo dragInfo)
+{
     if(!dragInfo.files.empty())
     {
         file = Poco::File(dragInfo.files[0]);
-        mediaType = mediaMap.getMediaTypeForFile(file).toString();
+        mediaType = ofx::Media::getMediaTypeForFile(file).toString();
     }
-    
 }
