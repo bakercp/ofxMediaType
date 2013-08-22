@@ -28,6 +28,7 @@
 
 #include "Poco/File.h"
 #include "Poco/Net/MediaType.h"
+#include "ofTypes.h"
 
 
 namespace ofx {
@@ -36,6 +37,8 @@ namespace Media {
 
 class BaseMediaTypeProvider {
 public:
+    typedef std::shared_ptr<BaseMediaTypeProvider> Ptr;
+
     BaseMediaTypeProvider()
     {
     }
