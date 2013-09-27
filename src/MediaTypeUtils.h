@@ -40,10 +40,10 @@ namespace Media {
 Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file);
 Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix);
 Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path);
-std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed = false);
+std::string getMediaDescription(const Poco::File& file, bool examineCompressed = false);
 
-BaseMediaTypeProvider::Ptr getMediaTypeProvider();
-void setMediaTypeProvider(BaseMediaTypeProvider::Ptr mediaTypeProvider);
+BaseMediaTypeProvider::SharedPtr getMediaTypeProvider();
+void setMediaTypeProvider(BaseMediaTypeProvider::SharedPtr mediaTypeProvider);
 
 
 } } // namespace ofx::Media

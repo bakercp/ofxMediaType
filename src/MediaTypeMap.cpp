@@ -49,7 +49,8 @@ MediaTypeMap::~MediaTypeMap()
 //------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForFile(const Poco::File& file) const
 {
-    try {
+    try
+    {
         if(file.isDirectory())
         {
             Poco::Path path(file.path());
@@ -57,18 +58,16 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForFile(const Poco::File& file) c
             return getMediaTypeForPath(path);
         }
     }
-    catch(Poco::IOException e)
+    catch (Poco::IOException e)
     {
     }
 
     return getMediaTypeForPath(Poco::Path(file.path()));
-
 }
 
 //------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForSuffix(const std::string& suffix) const
 {
-    ScopedLock lock(mutex);
     ConstIterator iter = _map.find(suffix);
 
     if(iter != _map.end())
@@ -105,7 +104,6 @@ std::string MediaTypeMap::getMediaDescription(const Poco::File& file,
 void MediaTypeMap::add(const std::string& suffix,
                        const Poco::Net::MediaType& mediaType)
 {
-    ScopedLock lock(mutex);
     _map.insert(std::make_pair(suffix,mediaType));
 }
 
@@ -126,62 +124,53 @@ void MediaTypeMap::load(std::istream& inputStream)
 //------------------------------------------------------------------------------
 void MediaTypeMap::clear()
 {
-    ScopedLock lock(mutex);
     return _map.clear();
 }
 
 //------------------------------------------------------------------------------
 std::size_t MediaTypeMap::size() const
 {
-    ScopedLock lock(mutex);
     return _map.size();
 }
 
 //------------------------------------------------------------------------------
 MediaTypeMap::ConstIterator MediaTypeMap::begin() const
 {
-    ScopedLock lock(mutex);
     return _map.begin();
 }
 
 //------------------------------------------------------------------------------
 MediaTypeMap::ConstIterator MediaTypeMap::end() const
 {
-    ScopedLock lock(mutex);
     return _map.end();
 }
 
 //------------------------------------------------------------------------------
 MediaTypeMap::ConstIterator MediaTypeMap::find(const std::string& suffix) const
 {
-    ScopedLock lock(mutex);
     return _map.find(suffix);
 }
 
 //------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getDefault() const
 {
-    ScopedLock lock(mutex);
     return _defaultMediaType;
 }
 
 //------------------------------------------------------------------------------
 void MediaTypeMap::setDefault(const Poco::Net::MediaType& defaultMediaType)
 {
-    ScopedLock lock(mutex);
     _defaultMediaType = defaultMediaType;
 }
 
 
 //------------------------------------------------------------------------------
-MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream) {
+MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream)
+{
     FileSuffixToMediaTypeMap newMap;
-
     std::string line;
-
     while(std::getline(inputStream,line))
     {
-
         if(line.empty() || line[0] == '#') continue;
 
         int tokenizerFlags = Poco::StringTokenizer::TOK_TRIM |
@@ -201,7 +190,6 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
             }
         }
     }
-
     return newMap;
 }
 

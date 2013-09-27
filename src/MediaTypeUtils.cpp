@@ -31,7 +31,7 @@ namespace ofx {
 namespace Media {
 
 
-static BaseMediaTypeProvider::Ptr _mediaTypeProviderPtr = BaseMediaTypeProvider::Ptr(new MediaTypeMap());
+static BaseMediaTypeProvider::SharedPtr _mediaTypeProviderPtr = BaseMediaTypeProvider::SharedPtr(new MediaTypeMap());
 
 
 //------------------------------------------------------------------------------
@@ -53,19 +53,19 @@ Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path)
 }
 
 //------------------------------------------------------------------------------
-std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed)
+std::string getMediaDescription(const Poco::File& file, bool examineCompressed)
 {
-    return _mediaTypeProviderPtr->getMediaDescription(file, bExamineCompressed);
+    return _mediaTypeProviderPtr->getMediaDescription(file, examineCompressed);
 }
 
 //------------------------------------------------------------------------------
-BaseMediaTypeProvider::Ptr getMediaTypeProvider()
+BaseMediaTypeProvider::SharedPtr getMediaTypeProvider()
 {
 	return _mediaTypeProviderPtr;
 }
 
 //------------------------------------------------------------------------------
-void setMediaTypeProvider(BaseMediaTypeProvider::Ptr mediaTypeProviderPtr)
+void setMediaTypeProvider(BaseMediaTypeProvider::SharedPtr mediaTypeProviderPtr)
 {
     _mediaTypeProviderPtr = mediaTypeProviderPtr;
 }

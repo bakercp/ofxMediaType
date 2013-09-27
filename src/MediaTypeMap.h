@@ -78,8 +78,7 @@ private:
 
     FileSuffixToMediaTypeMap _map;
     Poco::Net::MediaType _defaultMediaType;
-    
-    mutable Poco::FastMutex mutex;
+
 };
 
 

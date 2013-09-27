@@ -1638,4 +1638,4 @@ static std::map<std::string,Poco::Net::MediaType> createDefaultApacheMap()
 static std::map<std::string,Poco::Net::MediaType> defaultMediaTypeMap = createDefaultApacheMap();
 
 
-} }
+} } // namespace ofx::Media

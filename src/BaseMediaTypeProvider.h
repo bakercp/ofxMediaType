@@ -35,9 +35,10 @@ namespace ofx {
 namespace Media {
 
 
-class BaseMediaTypeProvider {
+class BaseMediaTypeProvider
+{
 public:
-    typedef std::shared_ptr<BaseMediaTypeProvider> Ptr;
+    typedef std::shared_ptr<BaseMediaTypeProvider> SharedPtr;
 
     BaseMediaTypeProvider()
     {
@@ -52,8 +53,7 @@ public:
     virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
     virtual std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed) const = 0;
 
-
 };
 
 
-} }
+} } // namespace ofx::Media
