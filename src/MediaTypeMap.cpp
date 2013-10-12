@@ -36,8 +36,8 @@ const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
 
 //------------------------------------------------------------------------------
 MediaTypeMap::MediaTypeMap():
-    _defaultMediaType(DEFAULT_MEDIA_TYPE),
-    _map(defaultMediaTypeMap)
+    _defaultMediaType(DEFAULT_MEDIA_TYPE)//,
+//    _map(defaultMediaTypeMap)
 {
 }
 
