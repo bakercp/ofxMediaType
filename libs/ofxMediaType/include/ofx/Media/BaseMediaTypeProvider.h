@@ -27,23 +27,31 @@
 
 
 #include "Poco/File.h"
-#include "Poco/Path.h"
 #include "Poco/Net/MediaType.h"
 #include "ofTypes.h"
-#include "BaseMediaTypeProvider.h"
 
 
 namespace ofx {
 namespace Media {
 
 
-Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file);
-Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix);
-Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path);
-std::string getMediaDescription(const Poco::File& file, bool examineCompressed = false);
+class BaseMediaTypeProvider
+{
+public:
+    typedef std::shared_ptr<BaseMediaTypeProvider> SharedPtr;
 
-BaseMediaTypeProvider::SharedPtr getMediaTypeProvider();
-void setMediaTypeProvider(BaseMediaTypeProvider::SharedPtr mediaTypeProvider);
+    BaseMediaTypeProvider()
+    {
+    }
+
+    virtual ~BaseMediaTypeProvider()
+    {
+    }
+
+    virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
+    virtual std::string getMediaDescription(const Poco::Path& path, bool bExamineCompressed) const = 0;
+
+};
 
 
 } } // namespace ofx::Media

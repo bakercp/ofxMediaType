@@ -26,34 +26,5 @@
 #pragma once
 
 
-#include "Poco/File.h"
-#include "Poco/Net/MediaType.h"
-#include "ofTypes.h"
-
-
-namespace ofx {
-namespace Media {
-
-
-class BaseMediaTypeProvider
-{
-public:
-    typedef std::shared_ptr<BaseMediaTypeProvider> SharedPtr;
-
-    BaseMediaTypeProvider()
-    {
-    }
-
-    virtual ~BaseMediaTypeProvider()
-    {
-    }
-
-    virtual Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file) const = 0;
-    virtual Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix) const = 0;
-    virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
-    virtual std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed) const = 0;
-
-};
-
-
-} } // namespace ofx::Media
+#include "ofx/Media/BaseMediaTypeProvider.h"
+#include "ofx/Media/MediaTypeMap.h"

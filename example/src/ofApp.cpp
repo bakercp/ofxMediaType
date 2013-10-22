@@ -29,6 +29,8 @@
 //------------------------------------------------------------------------------
 void ofApp::setup()
 {
+    typeMap = MediaTypeMap::getDefault();
+
     instructions = "Drag file onto the window for more info.";
     mediaType = "";
 
@@ -55,6 +57,6 @@ void ofApp::dragEvent(ofDragInfo dragInfo)
     if(!dragInfo.files.empty())
     {
         file = Poco::File(dragInfo.files[0]);
-        mediaType = ofx::Media::getMediaTypeForFile(file).toString();
+        mediaType = typeMap->getMediaTypeForPath(file.path()).toString();
     }
 }

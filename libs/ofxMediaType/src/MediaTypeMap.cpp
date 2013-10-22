@@ -23,8 +23,8 @@
 // =============================================================================
 
 
-#include "MediaTypeMap.h"
-#include "ApacheMimeTypes.h"
+#include "ofx/Media/MediaTypeMap.h"
+#include "ofFileUtils.h"
 
 
 namespace ofx {
@@ -34,53 +34,19 @@ namespace Media {
 const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
 
 
-//------------------------------------------------------------------------------
-MediaTypeMap::MediaTypeMap():
-    _defaultMediaType(DEFAULT_MEDIA_TYPE),
-    _map(defaultMediaTypeMap)
+MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile):
+    _defaultMediaType(DEFAULT_MEDIA_TYPE)
 {
+    ofBuffer buffer = ofBufferFromFile(mimeTypesFile);
+    std::stringstream ss;
+    ss << buffer;
+    load(ss);
 }
 
-//------------------------------------------------------------------------------
 MediaTypeMap::~MediaTypeMap()
 {
 }
 
-//------------------------------------------------------------------------------
-Poco::Net::MediaType MediaTypeMap::getMediaTypeForFile(const Poco::File& file) const
-{
-    try
-    {
-        if(file.isDirectory())
-        {
-            Poco::Path path(file.path());
-            path = path.makeDirectory();
-            return getMediaTypeForPath(path);
-        }
-    }
-    catch (Poco::IOException e)
-    {
-    }
-
-    return getMediaTypeForPath(Poco::Path(file.path()));
-}
-
-//------------------------------------------------------------------------------
-Poco::Net::MediaType MediaTypeMap::getMediaTypeForSuffix(const std::string& suffix) const
-{
-    ConstIterator iter = _map.find(suffix);
-
-    if(iter != _map.end())
-    {
-        return (*iter).second;
-    }
-    else
-    {
-        return _defaultMediaType;
-    }
-}
-
-//------------------------------------------------------------------------------
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) const
 {
     if(path.isDirectory())
@@ -89,82 +55,51 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) c
     }
     else
     {
-        return getMediaTypeForSuffix(path.getExtension());
+        ConstIterator iter = _map.find(path.getExtension());
+
+        if(iter != _map.end())
+        {
+            return (*iter).second;
+        }
+        else
+        {
+            return _defaultMediaType;
+        }
     }
 }
 
-//------------------------------------------------------------------------------
-std::string MediaTypeMap::getMediaDescription(const Poco::File& file,
+std::string MediaTypeMap::getMediaDescription(const Poco::Path& path,
                                               bool bExamineCompressed) const
 {
-    return getMediaTypeForFile(file).toString();
+    return getMediaTypeForPath(path).toString();
 }
 
-//------------------------------------------------------------------------------
 void MediaTypeMap::add(const std::string& suffix,
                        const Poco::Net::MediaType& mediaType)
 {
     _map.insert(std::make_pair(suffix,mediaType));
 }
 
-//------------------------------------------------------------------------------
-void MediaTypeMap::add(std::istream& inputStream)
-{
-    FileSuffixToMediaTypeMap _newMap = parse(inputStream);
-    _map.insert(_newMap.begin(),_newMap.end());
-}
-
-//------------------------------------------------------------------------------
 void MediaTypeMap::load(std::istream& inputStream)
 {
-    clear();
-    add(inputStream);
+    _map = parse(inputStream);
 }
 
-//------------------------------------------------------------------------------
 void MediaTypeMap::clear()
 {
     return _map.clear();
 }
 
-//------------------------------------------------------------------------------
-std::size_t MediaTypeMap::size() const
-{
-    return _map.size();
-}
-
-//------------------------------------------------------------------------------
-MediaTypeMap::ConstIterator MediaTypeMap::begin() const
-{
-    return _map.begin();
-}
-
-//------------------------------------------------------------------------------
-MediaTypeMap::ConstIterator MediaTypeMap::end() const
-{
-    return _map.end();
-}
-
-//------------------------------------------------------------------------------
-MediaTypeMap::ConstIterator MediaTypeMap::find(const std::string& suffix) const
-{
-    return _map.find(suffix);
-}
-
-//------------------------------------------------------------------------------
-Poco::Net::MediaType MediaTypeMap::getDefault() const
+Poco::Net::MediaType MediaTypeMap::getDefaultMediaType() const
 {
     return _defaultMediaType;
 }
 
-//------------------------------------------------------------------------------
-void MediaTypeMap::setDefault(const Poco::Net::MediaType& defaultMediaType)
+void MediaTypeMap::setDefaultMediaType(const Poco::Net::MediaType& defaultMediaType)
 {
     _defaultMediaType = defaultMediaType;
 }
 
-
-//------------------------------------------------------------------------------
 MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream)
 {
     FileSuffixToMediaTypeMap newMap;
@@ -190,6 +125,7 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
             }
         }
     }
+    
     return newMap;
 }
 

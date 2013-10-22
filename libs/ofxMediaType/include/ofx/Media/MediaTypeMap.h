@@ -34,7 +34,7 @@
 #include "Poco/Path.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/Net/MediaType.h"
-#include "BaseMediaTypeProvider.h"
+#include "ofx/Media/BaseMediaTypeProvider.h"
 
 
 namespace ofx {
@@ -44,38 +44,36 @@ namespace Media {
 class MediaTypeMap: public BaseMediaTypeProvider
 {
 public:
+    typedef std::shared_ptr<MediaTypeMap> SharedPtr;
     typedef std::map<std::string,Poco::Net::MediaType> FileSuffixToMediaTypeMap;
     typedef FileSuffixToMediaTypeMap::const_iterator ConstIterator;
 
-    MediaTypeMap();
+    MediaTypeMap(const std::string& mimeTypesFile = "mime.types");
     virtual ~MediaTypeMap();
 
-    Poco::Net::MediaType getMediaTypeForFile(const Poco::File& file) const;
-    Poco::Net::MediaType getMediaTypeForSuffix(const std::string& suffix) const;
     Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const;
-    std::string getMediaDescription(const Poco::File& file, bool bExamineCompressed) const;
+    std::string getMediaDescription(const Poco::Path& path, bool bExamineCompressed) const;
 
     void add(const std::string& suffix, const Poco::Net::MediaType& mediaType);
 
-    void add(std::istream& inputStream);
     void load(std::istream& inputStream);
 
     void clear();
-    std::size_t size() const;
-    ConstIterator begin() const;
-    ConstIterator end() const;
-    ConstIterator find(const std::string& suffix) const;
 
-    Poco::Net::MediaType getDefault() const;
-    void setDefault(const Poco::Net::MediaType& defaultMediaType);
+    Poco::Net::MediaType getDefaultMediaType() const;
+    void setDefaultMediaType(const Poco::Net::MediaType& defaultMediaType);
+
+    static SharedPtr getDefault()
+    {
+        static SharedPtr ptr = SharedPtr(new MediaTypeMap());
+        return ptr;
+    }
 
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
 
     static const std::string DEFAULT_MEDIA_TYPE;
 
 private:
-    typedef Poco::FastMutex::ScopedLock ScopedLock;
-
     FileSuffixToMediaTypeMap _map;
     Poco::Net::MediaType _defaultMediaType;
 
