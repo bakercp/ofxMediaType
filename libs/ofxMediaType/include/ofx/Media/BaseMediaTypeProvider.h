@@ -49,7 +49,8 @@ public:
     }
 
     virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
-    virtual std::string getMediaDescription(const Poco::Path& path, bool bExamineCompressed) const = 0;
+    virtual std::string getMediaDescription(const Poco::Path& path,
+                                            bool examineCompressed) const = 0;
 
 };
 

@@ -26,5 +26,7 @@
 #pragma once
 
 
+#include "Poco/File.h"
+#include "Poco/Net/MediaType.h"
 #include "ofx/Media/BaseMediaTypeProvider.h"
 #include "ofx/Media/MediaTypeMap.h"

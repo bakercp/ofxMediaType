@@ -32,6 +32,16 @@ namespace Media {
 
 
 const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
+const std::string MediaTypeMap::DEFAULT_APACHE_MIME_TYPES_PATH = "media/mime.types";
+
+
+MediaTypeMap::MediaTypeMap(): _defaultMediaType(DEFAULT_MEDIA_TYPE)
+{
+    ofBuffer buffer = ofBufferFromFile(DEFAULT_APACHE_MIME_TYPES_PATH);
+    std::stringstream ss;
+    ss << buffer;
+    load(ss);
+}
 
 
 MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile):
@@ -43,9 +53,22 @@ MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile):
     load(ss);
 }
 
+
+MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile,
+                           const std::string& defaultMediaType):
+    _defaultMediaType(defaultMediaType)
+{
+    ofBuffer buffer = ofBufferFromFile(mimeTypesFile);
+    std::stringstream ss;
+    ss << buffer;
+    load(ss);
+}
+
+
 MediaTypeMap::~MediaTypeMap()
 {
 }
+
 
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) const
 {
@@ -68,11 +91,13 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) c
     }
 }
 
+
 std::string MediaTypeMap::getMediaDescription(const Poco::Path& path,
-                                              bool bExamineCompressed) const
+                                              bool examineCompressed) const
 {
     return getMediaTypeForPath(path).toString();
 }
+
 
 void MediaTypeMap::add(const std::string& suffix,
                        const Poco::Net::MediaType& mediaType)
@@ -80,44 +105,51 @@ void MediaTypeMap::add(const std::string& suffix,
     _map.insert(std::make_pair(suffix,mediaType));
 }
 
+
 void MediaTypeMap::load(std::istream& inputStream)
 {
     _map = parse(inputStream);
 }
+
 
 void MediaTypeMap::clear()
 {
     return _map.clear();
 }
 
+
 Poco::Net::MediaType MediaTypeMap::getDefaultMediaType() const
 {
     return _defaultMediaType;
 }
+
 
 void MediaTypeMap::setDefaultMediaType(const Poco::Net::MediaType& defaultMediaType)
 {
     _defaultMediaType = defaultMediaType;
 }
 
+
 MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream)
 {
     FileSuffixToMediaTypeMap newMap;
     std::string line;
+
     while(std::getline(inputStream,line))
     {
-        if(line.empty() || line[0] == '#') continue;
+        if(line.empty() || '#' == line[0]) continue;
 
         int tokenizerFlags = Poco::StringTokenizer::TOK_TRIM |
                              Poco::StringTokenizer::TOK_IGNORE_EMPTY;
 
-        Poco::StringTokenizer tokens(line,"\t",tokenizerFlags);
+        Poco::StringTokenizer tokens(line, "\t", tokenizerFlags);
 
-        if(tokens.count() == 2)
+        if(2 == tokens.count())
         {
             std::string mediaType = tokens[0];
-            Poco::StringTokenizer suffixTokens(tokens[1]," ",tokenizerFlags);
+            Poco::StringTokenizer suffixTokens(tokens[1], " ", tokenizerFlags);
             Poco::StringTokenizer::Iterator iter = suffixTokens.begin();
+
             while(iter != suffixTokens.end())
             {
                 newMap.insert(std::make_pair(*iter, Poco::Net::MediaType(mediaType)));
