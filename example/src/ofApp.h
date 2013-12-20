@@ -27,12 +27,11 @@
 
 
 #include "ofMain.h"
-#include "Poco/File.h"
-#include "Poco/Net/MediaType.h"
 #include "ofxMediaType.h"
 
 
 using namespace ofx::Media;
+
 
 class ofApp: public ofBaseApp
 {
@@ -47,6 +46,6 @@ public:
     Poco::File file;
     std::string mediaType;
 
-    MediaTypeMap::SharedPtr typeMap;
+    MediaTypeMap::SharedPtr mediaTypeMap;
     
 };
