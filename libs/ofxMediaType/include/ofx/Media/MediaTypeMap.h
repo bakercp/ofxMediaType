@@ -42,36 +42,74 @@ namespace Media {
 
 
 class MediaTypeMap: public BaseMediaTypeProvider
+    // MediaTypeMap is a class that attempts to return MIME Type information for
+    // a given file using the file's suffix.  The default functionality loads
+    // an Apache mime.types file to create the database.  Database entries can
+    // also be added and removed manually.
 {
 public:
     typedef std::shared_ptr<MediaTypeMap> SharedPtr;
-    typedef std::map<std::string,Poco::Net::MediaType> FileSuffixToMediaTypeMap;
-    typedef FileSuffixToMediaTypeMap::const_iterator ConstIterator;
+        ///< A shared pointer typedef.
 
-    MediaTypeMap(const std::string& mimeTypesFile = "mime.types");
+    typedef std::map<std::string,Poco::Net::MediaType> FileSuffixToMediaTypeMap;
+        ///< A map of file suffix keys and their MIME type values.
+
+    typedef FileSuffixToMediaTypeMap::const_iterator ConstIterator;
+        ///< A const iterator for the FileSuffixToMediaTypeMap type.
+
+    MediaTypeMap();
+        ///< Create a default MediaType map.
+    MediaTypeMap(const std::string& mimeTypesFile);
+        ///< Create a default MediaType map with the given
+        ///< Apache mime.types file location.
+
+    MediaTypeMap(const std::string& mimeTypesFile,
+                 const std::string& defaultMediaType);
+        ///< Create a default MediaType map with the given
+        ///< Apache mime.types file location and the default media
+        ///< type to be used for unrecognized files.
+
     virtual ~MediaTypeMap();
+        ///< Destroy the MediaTypeMap.
 
     Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const;
+        ///< Returns the MediaType for the given path.
+
     std::string getMediaDescription(const Poco::Path& path, bool bExamineCompressed) const;
+        ///< Returns the MediaType for the given path.
 
     void add(const std::string& suffix, const Poco::Net::MediaType& mediaType);
+        ///< Add an entry to the media type database where `suffix` is the
+        ///< key and `mediaType` is the associated MediaType.
 
     void load(std::istream& inputStream);
+        ///< Load an Apache mime.types file from the given input stream.
 
     void clear();
+        ///< Remove all entries from the loaded mime types map database.
 
     Poco::Net::MediaType getDefaultMediaType() const;
+        ///< Returns the default media type.  Usually `application/octet-stream`
+
     void setDefaultMediaType(const Poco::Net::MediaType& defaultMediaType);
+        ///< Sets the default media type used for unmatched file suffixes.
 
     static SharedPtr getDefault()
+        ///< Get a the default instance of the MediaTypeMap.
     {
         static SharedPtr ptr = SharedPtr(new MediaTypeMap());
         return ptr;
     }
 
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
+        ///< Parse Apache mime.types files and return the corresponding
+        ///< FileSuffixToMediaTypeMap.
 
     static const std::string DEFAULT_MEDIA_TYPE;
+        ///< The default MIME type used for unmatched files.
+
+    static const std::string DEFAULT_APACHE_MIME_TYPES_PATH;
+        ///< The default path location for the Apache mime types file.
 
 private:
     FileSuffixToMediaTypeMap _map;
