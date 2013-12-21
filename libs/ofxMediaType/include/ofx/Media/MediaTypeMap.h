@@ -34,18 +34,18 @@
 #include "Poco/Path.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/Net/MediaType.h"
-#include "ofx/Media/BaseMediaTypeProvider.h"
+#include "ofx/Media/AbstractMediaTypeProvider.h"
 
 
 namespace ofx {
 namespace Media {
 
 
-class MediaTypeMap: public BaseMediaTypeProvider
-    // MediaTypeMap is a class that attempts to return MIME Type information for
-    // a given file using the file's suffix.  The default functionality loads
-    // an Apache mime.types file to create the database.  Database entries can
-    // also be added and removed manually.
+class MediaTypeMap: public AbstractMediaTypeProvider
+    /// MediaTypeMap is a class that attempts to return MIME Type information for
+    /// a given file using the file's suffix.  The default functionality loads
+    /// an Apache mime.types file to create the database.  Database entries can
+    /// also be added and removed manually.
 {
 public:
     typedef std::shared_ptr<MediaTypeMap> SharedPtr;
@@ -94,12 +94,8 @@ public:
     void setDefaultMediaType(const Poco::Net::MediaType& defaultMediaType);
         ///< Sets the default media type used for unmatched file suffixes.
 
-    static SharedPtr getDefault()
+    static SharedPtr getDefault();
         ///< Get a the default instance of the MediaTypeMap.
-    {
-        static SharedPtr ptr = SharedPtr(new MediaTypeMap());
-        return ptr;
-    }
 
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
         ///< Parse Apache mime.types files and return the corresponding

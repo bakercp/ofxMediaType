@@ -130,6 +130,13 @@ void MediaTypeMap::setDefaultMediaType(const Poco::Net::MediaType& defaultMediaT
 }
 
 
+MediaTypeMap::SharedPtr MediaTypeMap::getDefault()
+{
+    static SharedPtr ptr = SharedPtr(new MediaTypeMap());
+    return ptr;
+}
+
+
 MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream)
 {
     FileSuffixToMediaTypeMap newMap;
