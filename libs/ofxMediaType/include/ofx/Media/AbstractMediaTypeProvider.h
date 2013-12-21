@@ -36,9 +36,12 @@ namespace Media {
 
 
 class AbstractMediaTypeProvider
-    /// AbstractMediaTypeProvider is a base class for providing MIME type info.
+    /// AbstractMediaTypeProvider is a base class for providing Media Type info.
 {
 public:
+    typedef std::shared_ptr<AbstractMediaTypeProvider> SharedPtr;
+        ///< A shared pointer to the AbstractMediaTypeProvider.
+
     AbstractMediaTypeProvider()
         ///< Create an AbstractMediaTypeProvider.
     {
