@@ -42,41 +42,51 @@ namespace Media {
 
 
 class MediaTypeMap: public AbstractMediaTypeProvider
-    /// MediaTypeMap is a class that attempts to return MIME Type information for
-    /// a given file using the file's suffix.  The default functionality loads
-    /// an Apache mime.types file to create the database.  Database entries can
-    /// also be added and removed manually.
+    /// \brief MediaTypeMap returns a file's MIME type based on its file suffix.
+    /// \details MediaTypeMap is a class that attempts to return MIME Type
+    ///          information for a given file using the file's suffix.  The
+    ///          default functionality loads an Apache mime.types file to
+    ///          create the database.  Database entries can also be added and
+    ///          removed manually.
 {
 public:
     typedef std::shared_ptr<MediaTypeMap> SharedPtr;
-        ///< A shared pointer typedef.
+        ///< \brief A shared pointer typedef.
 
-    typedef std::map<std::string,Poco::Net::MediaType> FileSuffixToMediaTypeMap;
-        ///< A map of file suffix keys and their MIME type values.
+    typedef std::map<std::string, Poco::Net::MediaType> FileSuffixToMediaTypeMap;
+        ///< \brief A map of file suffix keys and their MIME type values.
 
     typedef FileSuffixToMediaTypeMap::const_iterator ConstIterator;
-        ///< A const iterator for the FileSuffixToMediaTypeMap type.
+        ///< \brief A const iterator for the FileSuffixToMediaTypeMap type.
 
     MediaTypeMap();
-        ///< Create a default MediaType map.
+        ///< \brief Create a default MediaType map.
+
     MediaTypeMap(const std::string& mimeTypesFile);
-        ///< Create a default MediaType map with the given
-        ///< Apache mime.types file location.
+        ///< \brief Create a default MediaType map.
+        ///< \param mimeTypesFile The location of the Apache mime.types file.
 
     MediaTypeMap(const std::string& mimeTypesFile,
                  const std::string& defaultMediaType);
-        ///< Create a default MediaType map with the given
-        ///< Apache mime.types file location and the default media
-        ///< type to be used for unrecognized files.
+        ///< \brief Create a default MediaType map
+        ///< \param mimeTypesFile The location of the Apache mime.types file.
+        ///< \param defaultMediaType The default media type used for
+        ///<        unrecognized files.
 
     virtual ~MediaTypeMap();
-        ///< Destroy the MediaTypeMap.
+        ///< \brief Destroy the MediaTypeMap.
 
     Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const;
-        ///< Returns the MediaType for the given path.
+        ///< \brief Attempt to get the MediaType for the given path.
+        ///< \param path The path of the file to test.
+        ///< \returns The MediaType for the given path on success, and the
+        ///<        default media type on failure.
 
-    std::string getMediaDescription(const Poco::Path& path, bool bExamineCompressed) const;
-        ///< Returns the MediaType for the given path.
+    std::string getMediaDescription(const Poco::Path& path,
+                                    bool examineCompressed) const;
+        ///< \param path The path of the file to test.
+        ///< \parm
+    ///< \returns the media description for the given path.
 
     void add(const std::string& suffix, const Poco::Net::MediaType& mediaType);
         ///< Add an entry to the media type database where `suffix` is the
