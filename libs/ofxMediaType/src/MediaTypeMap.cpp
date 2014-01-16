@@ -38,6 +38,12 @@ const std::string MediaTypeMap::DEFAULT_APACHE_MIME_TYPES_PATH = "media/mime.typ
 MediaTypeMap::MediaTypeMap(): _defaultMediaType(DEFAULT_MEDIA_TYPE)
 {
     ofBuffer buffer = ofBufferFromFile(DEFAULT_APACHE_MIME_TYPES_PATH);
+
+    if (0 == buffer.size())
+    {
+        ofLogError("MediaTypeMap::MediaTypeMap") << "Media Types Buffer is Empty.";
+    }
+
     std::stringstream ss;
     ss << buffer;
     load(ss);
@@ -48,6 +54,12 @@ MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile):
     _defaultMediaType(DEFAULT_MEDIA_TYPE)
 {
     ofBuffer buffer = ofBufferFromFile(mimeTypesFile);
+
+    if (0 == buffer.size())
+    {
+        ofLogError("MediaTypeMap::MediaTypeMap") << "Media Types Buffer is Empty.";
+    }
+
     std::stringstream ss;
     ss << buffer;
     load(ss);
@@ -59,6 +71,12 @@ MediaTypeMap::MediaTypeMap(const std::string& mimeTypesFile,
     _defaultMediaType(defaultMediaType)
 {
     ofBuffer buffer = ofBufferFromFile(mimeTypesFile);
+
+    if (0 == buffer.size())
+    {
+        ofLogError("MediaTypeMap::MediaTypeMap") << "Media Types Buffer is Empty.";
+    }
+
     std::stringstream ss;
     ss << buffer;
     load(ss);

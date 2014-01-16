@@ -34,6 +34,7 @@
 #include "Poco/Path.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/Net/MediaType.h"
+#include "ofLog.h"
 #include "ofx/Media/AbstractMediaTypeProvider.h"
 
 
