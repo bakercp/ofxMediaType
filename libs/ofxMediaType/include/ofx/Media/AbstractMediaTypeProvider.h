@@ -35,34 +35,34 @@ namespace ofx {
 namespace Media {
 
 
+/// AbstractMediaTypeProvider is a base class for providing Media Type info.
 class AbstractMediaTypeProvider
-    /// AbstractMediaTypeProvider is a base class for providing Media Type info.
 {
 public:
+    /// A shared pointer to the AbstractMediaTypeProvider.
     typedef std::shared_ptr<AbstractMediaTypeProvider> SharedPtr;
-        ///< A shared pointer to the AbstractMediaTypeProvider.
 
+    /// Create an AbstractMediaTypeProvider.
     AbstractMediaTypeProvider()
-        ///< Create an AbstractMediaTypeProvider.
     {
     }
 
+    /// Destroy an AbstractMediaTypeProvider.
     virtual ~AbstractMediaTypeProvider()
-        ///< Destroy an AbstractMediaTypeProvider.
     {
     }
 
+    /// \brief Attempt to get the MediaType for the given path.
+    /// \param path The path of the file to test.
+    /// \returns The MediaType for the given path on success, and the
+    ///        default media type on failure.
     virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
-        ///< \brief Attempt to get the MediaType for the given path.
-        ///< \param path The path of the file to test.
-        ///< \returns The MediaType for the given path on success, and the
-        ///<        default media type on failure.
 
+    /// Returns a std::string description for a given Poco::Path.
+    /// Archived and compressed files are searched if examineCompressed
+    /// is set to true.
     virtual std::string getMediaDescription(const Poco::Path& path,
                                             bool examineCompressed) const = 0;
-        ///< Returns a std::string description for a given Poco::Path.
-        ///< Archived and compressed files are searched if examineCompressed
-        ///< is set to true.
 
 };
 
