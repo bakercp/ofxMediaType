@@ -35,19 +35,19 @@ namespace ofx {
 namespace Media {
 
 
-/// AbstractMediaTypeProvider is a base class for providing Media Type info.
+/// \brief A base class for providing Media Type info.
 class AbstractMediaTypeProvider
 {
 public:
-    /// A shared pointer to the AbstractMediaTypeProvider.
+    /// \brief A shared pointer to the AbstractMediaTypeProvider.
     typedef std::shared_ptr<AbstractMediaTypeProvider> SharedPtr;
 
-    /// Create an AbstractMediaTypeProvider.
+    /// \brief Create an AbstractMediaTypeProvider.
     AbstractMediaTypeProvider()
     {
     }
 
-    /// Destroy an AbstractMediaTypeProvider.
+    /// \brief Destroy the AbstractMediaTypeProvider.
     virtual ~AbstractMediaTypeProvider()
     {
     }

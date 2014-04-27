@@ -102,6 +102,7 @@ public:
     /// \brief Remove all entries from the loaded mime types map database.
     void clear();
 
+    /// \brief Get the default media type. Usually `application/octet-stream`
     /// \returns the default media type.  Usually `application/octet-stream`
     Poco::Net::MediaType getDefaultMediaType() const;
 
@@ -113,19 +114,23 @@ public:
     /// \returns the default shared instance.
     static SharedPtr getDefault();
 
+    /// \brief Parse Apache mime.types files.
+    /// \param inputStream an input stream containing Apache mime.types.
+    /// returns a FileSuffixToMediaTypeMap.
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
-        ///< Parse Apache mime.types files and return the corresponding
-        ///< FileSuffixToMediaTypeMap.
 
     static const std::string DEFAULT_MEDIA_TYPE;
-        ///< The default MIME type used for unmatched files.
+        ///< \brief The default MIME type used for unmatched files.
 
     static const std::string DEFAULT_APACHE_MIME_TYPES_PATH;
-        ///< The default path location for the Apache mime types file.
+        ///< \brief The default path location for the Apache mime types file.
 
 private:
     FileSuffixToMediaTypeMap _map;
+        ///< \brief The mapping between file suffix and media type.
+
     Poco::Net::MediaType _defaultMediaType;
+        ///< \brief The default media type assigned when it is unknown.
 
 };
 
