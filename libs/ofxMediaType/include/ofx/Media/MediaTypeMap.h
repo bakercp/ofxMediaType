@@ -119,18 +119,18 @@ public:
     /// returns a FileSuffixToMediaTypeMap.
     static FileSuffixToMediaTypeMap parse(std::istream& inputStream);
 
+    /// \brief The default MIME type used for unmatched files.
     static const std::string DEFAULT_MEDIA_TYPE;
-        ///< \brief The default MIME type used for unmatched files.
 
+    /// \brief The default path location for the Apache mime types file.
     static const std::string DEFAULT_APACHE_MIME_TYPES_PATH;
-        ///< \brief The default path location for the Apache mime types file.
 
 private:
+    /// \brief The mapping between file suffix and media type.
     FileSuffixToMediaTypeMap _map;
-        ///< \brief The mapping between file suffix and media type.
 
+    /// \brief The default media type assigned when it is unknown.
     Poco::Net::MediaType _defaultMediaType;
-        ///< \brief The default media type assigned when it is unknown.
 
 };
 
