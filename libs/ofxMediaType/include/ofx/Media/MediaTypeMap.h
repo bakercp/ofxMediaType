@@ -43,11 +43,11 @@ namespace Media {
 
 
 /// \brief MediaTypeMap returns a file's MIME type based on its file suffix.
-/// \details MediaTypeMap is a class that attempts to return MIME Type
-///          information for a given file using the file's suffix.  The
-///          default functionality loads an Apache mime.types file to
-///          create the database.  Database entries can also be added and
-///          removed manually.
+///
+/// MediaTypeMap is a class that attempts to return MIME Type information for a
+/// given file using the file's suffix.  The default functionality loads an
+/// Apache mime.types file to create the database.  Database entries can also be
+/// added and removed manually.
 class MediaTypeMap: public AbstractMediaTypeProvider
 {
 public:
