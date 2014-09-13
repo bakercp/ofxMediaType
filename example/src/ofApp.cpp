@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,9 @@
 #include "ofApp.h"
 
 
-//------------------------------------------------------------------------------
 void ofApp::setup()
 {
-    mediaTypeMap = MediaTypeMap::getDefault();
+    mediaTypeMap = ofx::MediaTypeMap::getDefault();
 
     instructions = "Drag file onto the window for more info.";
     mediaType = "";
@@ -40,23 +39,35 @@ void ofApp::setup()
     ofNotifyDragEvent(simulatedDrag);
 }
 
-//------------------------------------------------------------------------------
+
 void ofApp::draw()
 {
     ofBackground(0);
 
     // draw instructions and info
     ofDrawBitmapString(instructions, 10, 15);
-    ofDrawBitmapString(file.path(), 10, 45);
-    ofDrawBitmapString(mediaType, 10, 75);
+
+    ofDrawBitmapString("Path:", 10, 45);
+    ofDrawBitmapString("\t" + path, 10, 60);
+
+    ofDrawBitmapString("Media Type:", 10, 90);
+    ofDrawBitmapString("\t" + mediaType, 10, 105);
+
+    ofDrawBitmapString("File extensions for media type:", 10, 135);
+
+    for (int i = 0; i < fileExtensions.size(); ++i)
+    {
+        ofDrawBitmapString("\t*." + fileExtensions[i], 10, 150 + (i * 15));
+    }
 }
 
-//------------------------------------------------------------------------------
+
 void ofApp::dragEvent(ofDragInfo dragInfo)
 {
-    if(!dragInfo.files.empty())
+    if (!dragInfo.files.empty())
     {
-        file = Poco::File(dragInfo.files[0]);
-        mediaType = mediaTypeMap->getMediaTypeForPath(file.path()).toString();
+        path = dragInfo.files[0];
+        mediaType = mediaTypeMap->getMediaTypeForPath(path).toString();
+        fileExtensions = mediaTypeMap->getFileExtensionsForMediaType(mediaType);
     }
 }

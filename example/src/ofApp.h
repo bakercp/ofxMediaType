@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +30,6 @@
 #include "ofxMediaType.h"
 
 
-using namespace ofx::Media;
-
-
 class ofApp: public ofBaseApp
 {
 public:
@@ -43,9 +40,11 @@ public:
 
     std::string instructions;
 
-    Poco::File file;
+    std::string path;
     std::string mediaType;
 
-    MediaTypeMap::SharedPtr mediaTypeMap;
+    std::vector<std::string> fileExtensions;
+
+    ofx::MediaTypeMap::SharedPtr mediaTypeMap;
     
 };
