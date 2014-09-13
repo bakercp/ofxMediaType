@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2009-2013 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009-2014 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,21 @@
 // =============================================================================
 
 
-#include "ofx/Media/MediaTypeMap.h"
+#include "ofx/MediaTypeMap.h"
 #include "ofFileUtils.h"
 
 
 namespace ofx {
-namespace Media {
 
 
 const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
 const std::string MediaTypeMap::DEFAULT_APACHE_MIME_TYPES_PATH = "media/mime.types";
+const std::string MediaTypeMap::DEFAULT_FILE_EXTENSION = "bin";
 
 
-MediaTypeMap::MediaTypeMap(): _defaultMediaType(DEFAULT_MEDIA_TYPE)
+MediaTypeMap::MediaTypeMap():
+    _defaultMediaType(DEFAULT_MEDIA_TYPE),
+    _defaultFileExtension(DEFAULT_FILE_EXTENSION)
 {
     ofBuffer buffer = ofBufferFromFile(DEFAULT_APACHE_MIME_TYPES_PATH);
 
@@ -90,15 +92,29 @@ MediaTypeMap::~MediaTypeMap()
 
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) const
 {
+    cout << "path.toString> " << path.toString() << endl;
+    cout << "path.isDirectory> " << path.isDirectory() << endl;
+    cout << "path.isAbsolute> " << path.isAbsolute() << endl;
+    cout << "path.isFile> " << path.isFile() << endl;
+    cout << "path.isRelative> " << path.isRelative() << endl;
+    cout << "getFileName> " << path.getFileName() << endl;
+    cout << "getNode> " << path.getNode() << endl;
+    cout << "getBaseName> " << path.getBaseName() << endl;
+
+
+
     if(path.isDirectory())
     {
+        cout << "IN HERE 1" << endl;
         return Poco::Net::MediaType("inode/directory");
     }
     else
     {
-        ConstIterator iter = _map.find(path.getExtension());
+        cout << "IN HERE 2" << endl;
 
-        if(iter != _map.end())
+        FileExtensionConstIterator iter = _fileExtensionToMediaTypeMap.find(path.getExtension());
+
+        if(iter != _fileExtensionToMediaTypeMap.end())
         {
             return (*iter).second;
         }
@@ -117,22 +133,82 @@ std::string MediaTypeMap::getMediaDescription(const Poco::Path& path,
 }
 
 
-void MediaTypeMap::add(const std::string& suffix,
-                       const Poco::Net::MediaType& mediaType)
+std::vector<std::string> MediaTypeMap::getFileExtensionsForMediaType(const Poco::Net::MediaType& mediaType) const
 {
-    _map.insert(std::make_pair(suffix,mediaType));
+    MediaTypeConstIterator iter = _mediaTypeToFileExtensionMap.find(mediaType.toString());
+
+    if (iter != _mediaTypeToFileExtensionMap.end())
+    {
+        std::vector<std::string> fileExtensions = iter->second;
+
+        if (fileExtensions.empty())
+        {
+            fileExtensions.push_back(_defaultFileExtension);
+            return fileExtensions;
+        }
+        else
+        {
+            return fileExtensions;
+        }
+    }
+    else
+    {
+        std::vector<std::string> fileExtensions;
+        fileExtensions.push_back(_defaultFileExtension);
+        return fileExtensions;
+    }
 }
 
 
-void MediaTypeMap::load(std::istream& inputStream)
+std::string MediaTypeMap::getBestFileExtensionsForMediaType(const Poco::Net::MediaType& mediaType) const
 {
-    _map = parse(inputStream);
+    std::vector<std::string> fileExtensions = getFileExtensionsForMediaType(mediaType);
+
+    if (fileExtensions.empty())
+    {
+        return _defaultFileExtension;
+    }
+    else
+    {
+        return fileExtensions[0];
+    }
+}
+
+
+void MediaTypeMap::add(const std::string& suffix,
+                       const Poco::Net::MediaType& mediaType)
+{
+    _fileExtensionToMediaTypeMap.insert(std::make_pair(suffix, mediaType.toString()));
+
+    std::vector<std::string> fileExtensions = getFileExtensionsForMediaType(mediaType);
+
+    std::vector<std::string>::iterator iter = fileExtensions.begin();
+
+    while (iter != fileExtensions.end())
+    {
+        if (*iter == suffix) return; // Already exists.
+        ++iter;
+    }
+
+    fileExtensions.push_back(suffix);
+
+    _mediaTypeToFileExtensionMap.insert(std::make_pair(mediaType.toString(), fileExtensions));
+
+}
+
+
+bool MediaTypeMap::load(std::istream& inputStream)
+{
+    return parse(inputStream,
+                 _fileExtensionToMediaTypeMap,
+                 _mediaTypeToFileExtensionMap);
 }
 
 
 void MediaTypeMap::clear()
 {
-    return _map.clear();
+    _mediaTypeToFileExtensionMap.clear();
+    _fileExtensionToMediaTypeMap.clear();
 }
 
 
@@ -148,6 +224,18 @@ void MediaTypeMap::setDefaultMediaType(const Poco::Net::MediaType& defaultMediaT
 }
 
 
+std::string MediaTypeMap::getDefaultFileExtension() const
+{
+    return _defaultFileExtension;
+}
+
+
+void MediaTypeMap::setDefaultFileExtension(const std::string& defaultFileExtension)
+{
+    _defaultFileExtension = defaultFileExtension;
+}
+
+
 MediaTypeMap::SharedPtr MediaTypeMap::getDefault()
 {
     static SharedPtr ptr = SharedPtr(new MediaTypeMap());
@@ -155,13 +243,19 @@ MediaTypeMap::SharedPtr MediaTypeMap::getDefault()
 }
 
 
-MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputStream)
+bool MediaTypeMap::parse(std::istream& inputStream,
+                         FileExtensionToMediaTypeMap& fileExtensionToMediaTypeMap,
+                         MediaTypeToFileExtensionMap& mediaTypeToFileExtensionMap)
 {
-    FileSuffixToMediaTypeMap newMap;
+    fileExtensionToMediaTypeMap.clear();
+    mediaTypeToFileExtensionMap.clear();
+
     std::string line;
 
-    while(std::getline(inputStream,line))
+    while(std::getline(inputStream, line))
     {
+        Poco::trimInPlace(line);
+
         if(line.empty() || '#' == line[0]) continue;
 
         int tokenizerFlags = Poco::StringTokenizer::TOK_TRIM |
@@ -172,19 +266,26 @@ MediaTypeMap::FileSuffixToMediaTypeMap MediaTypeMap::parse(std::istream& inputSt
         if(2 == tokens.count())
         {
             std::string mediaType = tokens[0];
+
+            std::vector<std::string> fileExtensions;
+
             Poco::StringTokenizer suffixTokens(tokens[1], " ", tokenizerFlags);
             Poco::StringTokenizer::Iterator iter = suffixTokens.begin();
 
             while(iter != suffixTokens.end())
             {
-                newMap.insert(std::make_pair(*iter, Poco::Net::MediaType(mediaType)));
+                fileExtensions.push_back(*iter);
+                fileExtensionToMediaTypeMap.insert(std::make_pair(*iter,
+                                                                  mediaType));
                 ++iter;
             }
+
+            mediaTypeToFileExtensionMap.insert(std::make_pair(mediaType, fileExtensions));
         }
     }
     
-    return newMap;
+    return true;
 }
 
 
-} } // namespace ofx::Media
+} // namespace ofx
