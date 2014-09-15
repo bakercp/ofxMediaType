@@ -55,7 +55,7 @@ void ofApp::draw()
 
     ofDrawBitmapString("File extensions for media type:", 10, 135);
 
-    for (int i = 0; i < fileExtensions.size(); ++i)
+    for (std::size_t i = 0; i < fileExtensions.size(); ++i)
     {
         ofDrawBitmapString("\t*." + fileExtensions[i], 10, 150 + (i * 15));
     }
