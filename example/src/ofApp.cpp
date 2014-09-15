@@ -48,7 +48,7 @@ void ofApp::draw()
     ofDrawBitmapString(instructions, 10, 15);
 
     ofDrawBitmapString("Path:", 10, 45);
-    ofDrawBitmapString("\t" + path, 10, 60);
+    ofDrawBitmapString("\t" + path.toString(), 10, 60);
 
     ofDrawBitmapString("Media Type:", 10, 90);
     ofDrawBitmapString("\t" + mediaType, 10, 105);
@@ -67,6 +67,9 @@ void ofApp::dragEvent(ofDragInfo dragInfo)
     if (!dragInfo.files.empty())
     {
         path = dragInfo.files[0];
+
+        cout << path.getFileName() << endl;
+
         mediaType = mediaTypeMap->getMediaTypeForPath(path).toString();
         fileExtensions = mediaTypeMap->getFileExtensionsForMediaType(mediaType);
     }

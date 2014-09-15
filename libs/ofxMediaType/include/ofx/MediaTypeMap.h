@@ -41,6 +41,15 @@
 namespace ofx {
 
 
+struct MediaTypeComparator
+{
+    bool operator()(const Poco::Net::MediaType& a,
+                    const Poco::Net::MediaType& b) const
+    {
+        return a.toString().compare(b.toString());
+    }
+};
+
 /// \brief MediaTypeMap returns a file's MIME type based on its file suffix.
 ///
 /// MediaTypeMap is a class that attempts to return MIME Type information for a
@@ -54,10 +63,10 @@ public:
     typedef std::shared_ptr<MediaTypeMap> SharedPtr;
 
     /// \brief A map of file extension keys and their MIME type values.
-    typedef std::map<std::string, std::string> FileExtensionToMediaTypeMap;
+    typedef std::map<std::string, Poco::Net::MediaType> FileExtensionToMediaTypeMap;
 
     /// \brief A map of file extension keys and their MIME type values.
-    typedef std::map<std::string, std::vector<std::string> > MediaTypeToFileExtensionMap;
+    typedef std::map<Poco::Net::MediaType, std::vector<std::string>, MediaTypeComparator> MediaTypeToFileExtensionMap;
 
     /// \brief A const iterator for the FileExtensionToMediaTypeMap type.
     typedef FileExtensionToMediaTypeMap::const_iterator FileExtensionConstIterator;

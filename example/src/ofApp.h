@@ -40,7 +40,7 @@ public:
 
     std::string instructions;
 
-    std::string path;
+    Poco::Path path;
     std::string mediaType;
 
     std::vector<std::string> fileExtensions;

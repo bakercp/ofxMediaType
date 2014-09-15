@@ -92,26 +92,14 @@ MediaTypeMap::~MediaTypeMap()
 
 Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) const
 {
-    cout << "path.toString> " << path.toString() << endl;
-    cout << "path.isDirectory> " << path.isDirectory() << endl;
-    cout << "path.isAbsolute> " << path.isAbsolute() << endl;
-    cout << "path.isFile> " << path.isFile() << endl;
-    cout << "path.isRelative> " << path.isRelative() << endl;
-    cout << "getFileName> " << path.getFileName() << endl;
-    cout << "getNode> " << path.getNode() << endl;
-    cout << "getBaseName> " << path.getBaseName() << endl;
+    Poco::File file(path);
 
-
-
-    if(path.isDirectory())
+    if (file.exists() && file.isDirectory())
     {
-        cout << "IN HERE 1" << endl;
         return Poco::Net::MediaType("inode/directory");
     }
     else
     {
-        cout << "IN HERE 2" << endl;
-
         FileExtensionConstIterator iter = _fileExtensionToMediaTypeMap.find(path.getExtension());
 
         if(iter != _fileExtensionToMediaTypeMap.end())
@@ -135,28 +123,34 @@ std::string MediaTypeMap::getMediaDescription(const Poco::Path& path,
 
 std::vector<std::string> MediaTypeMap::getFileExtensionsForMediaType(const Poco::Net::MediaType& mediaType) const
 {
-    MediaTypeConstIterator iter = _mediaTypeToFileExtensionMap.find(mediaType.toString());
+    std::vector<std::string> fileExtensions;
 
-    if (iter != _mediaTypeToFileExtensionMap.end())
-    {
-        std::vector<std::string> fileExtensions = iter->second;
+    MediaTypeConstIterator iter = _mediaTypeToFileExtensionMap.begin();
 
-        if (fileExtensions.empty())
-        {
-            fileExtensions.push_back(_defaultFileExtension);
-            return fileExtensions;
-        }
-        else
-        {
-            return fileExtensions;
-        }
-    }
-    else
+    while (iter != _mediaTypeToFileExtensionMap.end())
     {
-        std::vector<std::string> fileExtensions;
-        fileExtensions.push_back(_defaultFileExtension);
-        return fileExtensions;
+        if (mediaType.matches(iter->first))
+        {
+            fileExtensions = iter->second;
+
+            if (fileExtensions.empty())
+            {
+                fileExtensions.push_back(_defaultFileExtension);
+                return fileExtensions;
+            }
+            else
+            {
+                return fileExtensions;
+            }
+        }
+
+        ++iter;
     }
+
+    fileExtensions.push_back(_defaultFileExtension);
+
+    return fileExtensions;
+
 }
 
 
