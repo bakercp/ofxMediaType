@@ -46,7 +46,7 @@ struct MediaTypeComparator
     bool operator()(const Poco::Net::MediaType& a,
                     const Poco::Net::MediaType& b) const
     {
-        return a.toString().compare(b.toString());
+		return a.toString() < b.toString();
     }
 };
 
