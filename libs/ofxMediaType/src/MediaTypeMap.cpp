@@ -102,7 +102,7 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) c
     {
         FileExtensionConstIterator iter = _fileExtensionToMediaTypeMap.find(path.getExtension());
 
-        if(iter != _fileExtensionToMediaTypeMap.end())
+        if (iter != _fileExtensionToMediaTypeMap.end())
         {
             return (*iter).second;
         }
@@ -246,18 +246,18 @@ bool MediaTypeMap::parse(std::istream& inputStream,
 
     std::string line;
 
-    while(std::getline(inputStream, line))
+    while (std::getline(inputStream, line))
     {
         Poco::trimInPlace(line);
 
-        if(line.empty() || '#' == line[0]) continue;
+        if (line.empty() || '#' == line[0]) continue;
 
         int tokenizerFlags = Poco::StringTokenizer::TOK_TRIM |
                              Poco::StringTokenizer::TOK_IGNORE_EMPTY;
 
         Poco::StringTokenizer tokens(line, "\t", tokenizerFlags);
 
-        if(2 == tokens.count())
+        if (2 == tokens.count())
         {
             std::string mediaType = tokens[0];
 
@@ -266,7 +266,7 @@ bool MediaTypeMap::parse(std::istream& inputStream,
             Poco::StringTokenizer suffixTokens(tokens[1], " ", tokenizerFlags);
             Poco::StringTokenizer::Iterator iter = suffixTokens.begin();
 
-            while(iter != suffixTokens.end())
+            while (iter != suffixTokens.end())
             {
                 fileExtensions.push_back(*iter);
                 fileExtensionToMediaTypeMap.insert(std::make_pair(*iter,
