@@ -25,6 +25,7 @@
 
 #include "ofx/MediaTypeMap.h"
 #include "ofFileUtils.h"
+#include "Poco/UTF8String.h"
 
 
 namespace ofx {
@@ -100,7 +101,7 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) c
     }
     else
     {
-        FileExtensionConstIterator iter = _fileExtensionToMediaTypeMap.find(path.getExtension());
+        FileExtensionConstIterator iter = _fileExtensionToMediaTypeMap.find(Poco::UTF8::toLower(path.getExtension()));
 
         if (iter != _fileExtensionToMediaTypeMap.end())
         {
