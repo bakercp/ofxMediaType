@@ -36,7 +36,7 @@ void ofApp::setup()
     // simulate a drag event for platforms that don't yet support drag events
     ofDragInfo simulatedDrag;
     simulatedDrag.files.push_back(ofToDataPath("automat.ttf"));
-    ofNotifyDragEvent(simulatedDrag);
+    dragEvent(simulatedDrag);
 }
 
 
