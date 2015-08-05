@@ -116,7 +116,7 @@ Poco::Net::MediaType MediaTypeMap::getMediaTypeForPath(const Poco::Path& path) c
 
 
 std::string MediaTypeMap::getMediaDescription(const Poco::Path& path,
-                                              bool examineCompressed) const
+                                              bool) const
 {
     return getMediaTypeForPath(path).toString();
 }
