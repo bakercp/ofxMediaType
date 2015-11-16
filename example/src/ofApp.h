@@ -45,6 +45,6 @@ public:
 
     std::vector<std::string> fileExtensions;
 
-    ofx::MediaTypeMap::SharedPtr mediaTypeMap;
+    std::shared_ptr<ofx::MediaTypeMap> mediaTypeMap;
     
 };
