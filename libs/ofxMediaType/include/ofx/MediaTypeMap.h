@@ -41,8 +41,13 @@
 namespace ofx {
 
 
+/// \brief A comparator for comparing Poco::Net::MediaType classes.
 struct MediaTypeComparator
 {
+    /// \brief Compares to MediaTypes.
+    /// \param a The first media type.
+    /// \param b The second media type.
+    /// \returns true if a.toString() < b.toString()
     bool operator()(const Poco::Net::MediaType& a,
                     const Poco::Net::MediaType& b) const
     {
