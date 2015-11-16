@@ -231,9 +231,9 @@ void MediaTypeMap::setDefaultFileExtension(const std::string& defaultFileExtensi
 }
 
 
-MediaTypeMap::SharedPtr MediaTypeMap::getDefault()
+std::shared_ptr<MediaTypeMap> MediaTypeMap::getDefault()
 {
-    static SharedPtr ptr = SharedPtr(new MediaTypeMap());
+    static std::shared_ptr<MediaTypeMap> ptr = std::make_shared<MediaTypeMap>();
     return ptr;
 }
 

@@ -145,7 +145,7 @@ public:
 
     /// \brief Get a the default instance of the MediaTypeMap.
     /// \returns the default shared instance.
-    static SharedPtr getDefault();
+    static std::shared_ptr<MediaTypeMap> getDefault();
 
     /// \brief Parse Apache mime.types files.
     /// \param inputStream an input stream containing Apache mime.types.
