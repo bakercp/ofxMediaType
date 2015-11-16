@@ -1,6 +1,12 @@
 ofxMediaType
 ============
 
+Compatible with openFrameworks 0.9.0+
+
+For previous version of openFrameworks (e.g. 0.8.4), see https://github.com/bakercp/ofxIO/releases
+
+Generate all project files using the openFrameworks Project Generator.
+
 This is an addon that makes it easy to discover MIME types.  The basic implementation (contained in this addon) uses the Apache Mime Types definitions found here:
 
 http://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=co
