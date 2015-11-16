@@ -3,7 +3,7 @@ ofxMediaType
 
 Compatible with openFrameworks 0.9.0+
 
-For previous version of openFrameworks (e.g. 0.8.4), see https://github.com/bakercp/ofxIO/releases
+For previous version of openFrameworks (e.g. 0.8.4), see https://github.com/bakercp/ofxMediaType/releases
 
 Generate all project files using the openFrameworks Project Generator.
 
