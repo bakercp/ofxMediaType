@@ -1,6 +1,6 @@
 // =============================================================================
 //
-// Copyright (c) 2009 Christopher Baker <http://christopherbaker.net>
+// Copyright (c) 2009-2016 Christopher Baker <http://christopherbaker.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -183,6 +183,8 @@ private:
     /// \brief The default file extension assigned when it is unknown.
     std::string _defaultFileExtension;
 
+    /// \brief The default mime types if a file isn't available.
+    static const std::string DEFAULT_MINIMAL_APACHE_MIME_TYPES;
 };
 
 
