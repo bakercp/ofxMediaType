@@ -28,12 +28,7 @@
 #include "Poco/UTF8String.h"
 #include "ofxMediaType.h"
 
-
-#define STRINGIFY(x) #x
-
-
 namespace ofx {
-
 
 const std::string MediaTypeMap::DEFAULT_MEDIA_TYPE = "application/octet-stream";
 const std::string MediaTypeMap::DEFAULT_APACHE_MIME_TYPES_PATH = "media/mime.types";
