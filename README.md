@@ -15,7 +15,7 @@ API documentation can be found here.
 
 ## Build Status
 
-Linux, macOS [![Build Status](https://travis-ci.org/bakercp/ofxMediaType.svg?branch=stable)](https://travis-ci.org/bakercp/ofxMediaType)
+Linux, macOS [![Build Status](https://travis-ci.org/bakercp/ofxMediaType.svg?branch=master)](https://travis-ci.org/bakercp/ofxMediaType)
 
 Visual Studio, MSYS [![Build status](https://ci.appveyor.com/api/projects/status/yhyve6v3yheh8vhv/branch/master?svg=true)](https://ci.appveyor.com/project/bakercp/ofxmediatype/branch/master)
 
