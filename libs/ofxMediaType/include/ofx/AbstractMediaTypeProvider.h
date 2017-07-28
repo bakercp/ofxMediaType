@@ -36,13 +36,15 @@ public:
     /// \brief Attempt to get the MediaType for the given path.
     /// \param path The path of the file to test.
     /// \returns The MediaType for the given path on success, and the
-    ///        default media type on failure.
     virtual Poco::Net::MediaType getMediaTypeForPath(const Poco::Path& path) const = 0;
+    ///          default media type on failure.
 
-    /// Returns a std::string description for a given Poco::Path.
-    /// Archived and compressed files are searched if examineCompressed
-    /// is set to true.
     virtual std::string getMediaDescription(const Poco::Path& path,
+    /// \brief Attempt to get the description for a given path.
+    /// \param path The path of the file to test.
+    /// \param examineCompressed attempt to examine the contents of archived and
+    ///        compressed files.
+    /// \returns The description for a given path's media type.
                                             bool examineCompressed) const = 0;
 
 };

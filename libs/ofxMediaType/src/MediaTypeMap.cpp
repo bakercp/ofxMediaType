@@ -783,6 +783,7 @@ video/x-sgi-movie				movie\n \
 video/x-smv					smv\n \
 x-conference/x-cooltalk				ice\n ";
 
+    
 MediaTypeMap::MediaTypeMap():
     MediaTypeMap(DEFAULT_APACHE_MIME_TYPES_PATH, DEFAULT_MEDIA_TYPE)
 {
